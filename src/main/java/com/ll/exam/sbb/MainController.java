@@ -2,6 +2,9 @@ package com.ll.exam.sbb;
 
 
 import com.ll.exam.sbb.dto.ArticleDto;
+import com.ll.exam.sbb.dto.Person;
+import lombok.AllArgsConstructor;
+import lombok.Data;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -162,11 +165,9 @@ public class MainController {
        for(int i = 0 ; i < list.size() ; i++){
             if( list.get(i).getId() == id){
                 list.set(i, new ArticleDto(id, title,body));
-                //return Ut.json.toStr(list.get(i),"-");
                 return "%d글이 수정되었습니다.".formatted(id);
             }
         }
-
         return "%d글이 수정되었습니다.".formatted(id);
     }
 
@@ -174,15 +175,31 @@ public class MainController {
     @ResponseBody
     public String deleteArticle(int id) {
 
-
         for(int i = 0 ; i < list.size() ; i++){
             if( list.get(i).getId() == id){
                 list.remove(i);
-                //return Ut.json.toStr(list.get(i),"-");
                 return "%d글이 삭제되었습니다.".formatted(id);
             }
         }
-
-        return "%d글이 삭제되었습니다.".formatted(id);
+        return "%d글이 없습니다.".formatted(id);
     }
+
+    List<Person> persons = new ArrayList<>();
+
+    @GetMapping("/addPerson")
+    @ResponseBody
+    public String addPerson(@ModelAttribute Person person) {
+
+        persons.add(person);
+        return "%d, %s, %d가 추가 되었습니다.".formatted(person.getId(), person.getName(), person.getAge());
+    }
+
+    @GetMapping("/getPerson")
+    @ResponseBody
+    public Person getPerson(@ModelAttribute Person person) {
+
+
+        return person;
+    }
+
 }
