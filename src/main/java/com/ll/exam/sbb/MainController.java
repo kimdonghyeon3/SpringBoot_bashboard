@@ -138,16 +138,51 @@ public class MainController {
     @ResponseBody
     public ArticleDto getArticle(@PathVariable int id) {
 
-        for(int i = 0 ; i < list.size() ; i++){
+//        for(int i = 0 ; i < list.size() ; i++){
+//            if( list.get(i).getId() == id){
+//                //return Ut.json.toStr(list.get(i),"-");
+//                return list.get(i);
+//            }
+//        }
+
+        ArticleDto articleDto = list
+                .stream()
+                .filter(a -> a.getId() == id)
+                .findFirst()
+                .get();
+
+        //return "%d번 글이 없습니다.".formatted(id);
+        return articleDto;
+    }
+
+    @GetMapping("/modifyArticle")
+    @ResponseBody
+    public String modifyArticle(int id, String title, String body) {
+
+       for(int i = 0 ; i < list.size() ; i++){
             if( list.get(i).getId() == id){
+                list.set(i, new ArticleDto(id, title,body));
                 //return Ut.json.toStr(list.get(i),"-");
-                return list.get(i);
+                return "%d글이 수정되었습니다.".formatted(id);
             }
         }
 
-        //return "%d번 글이 없습니다.".formatted(id);
-        return new ArticleDto(0,null,null);
+        return "%d글이 수정되었습니다.".formatted(id);
     }
 
+    @GetMapping("/deleteArticle")
+    @ResponseBody
+    public String deleteArticle(int id) {
 
+
+        for(int i = 0 ; i < list.size() ; i++){
+            if( list.get(i).getId() == id){
+                list.remove(i);
+                //return Ut.json.toStr(list.get(i),"-");
+                return "%d글이 삭제되었습니다.".formatted(id);
+            }
+        }
+
+        return "%d글이 삭제되었습니다.".formatted(id);
+    }
 }
