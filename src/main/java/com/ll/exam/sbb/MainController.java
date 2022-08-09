@@ -4,6 +4,7 @@ package com.ll.exam.sbb;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @Controller
@@ -101,27 +102,21 @@ public class MainController {
                 """.formatted(mbti);
     }
 
-    @GetMapping("/saveSessionAge/{age}")
+    @GetMapping("/saveSession/{name}/{value}")
     @ResponseBody
-    public String saveSessionAge(HttpSession session, @PathVariable String age) {
+    public String saveSession(@PathVariable String name, @PathVariable String value, HttpServletRequest req) {
+        HttpSession session = req.getSession();
 
-        session.setAttribute("age", age);
+        session.setAttribute(name, value);
 
-        return """
-                <h1>저장된 나이 : %s</h1>
-                <h1>안녕하세요, GET 방식으로 오셨군요.</h1>
-                """.formatted(age);
+        return "세션변수 %s의 값이 %s(으)로 설정되었습니다.".formatted(name, value);
     }
 
-    @GetMapping("/getSessionAge")
+    @GetMapping("/getSession/{name}")
     @ResponseBody
-    public String getSessionAge(HttpSession session) {
+    public String getSession(@PathVariable String name, HttpSession session) {
+        String value = (String) session.getAttribute(name);
 
-        String age = session.getAttribute("age");
-
-        return """
-                <h1>저장된 나이 : %s</h1>
-                <h1>안녕하세요, GET 방식으로 오셨군요.</h1>
-                """.formatted(age);
+        return "세션변수 %s의 값이 %s 입니다.".formatted(name, value);
     }
 }
