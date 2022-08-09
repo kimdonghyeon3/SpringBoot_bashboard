@@ -1,11 +1,14 @@
 package com.ll.exam.sbb;
 
 
+import com.ll.exam.sbb.dto.ArticleDto;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class MainController {
@@ -119,4 +122,32 @@ public class MainController {
 
         return "세션변수 %s의 값이 %s 입니다.".formatted(name, value);
     }
+
+    List<ArticleDto> list = new ArrayList<>();
+
+    @GetMapping("/addArticle")
+    @ResponseBody
+    public String addArticle(String title, String body) {
+
+        ArticleDto articleDto = new ArticleDto(title, body);
+        list.add(articleDto);
+        return "%d번 글이 등록되었습니다.".formatted(articleDto.getId());
+    }
+
+    @GetMapping("/getArticle/{id}")
+    @ResponseBody
+    public ArticleDto getArticle(@PathVariable int id) {
+
+        for(int i = 0 ; i < list.size() ; i++){
+            if( list.get(i).getId() == id){
+                //return Ut.json.toStr(list.get(i),"-");
+                return list.get(i);
+            }
+        }
+
+        //return "%d번 글이 없습니다.".formatted(id);
+        return new ArticleDto(0,null,null);
+    }
+
+
 }
