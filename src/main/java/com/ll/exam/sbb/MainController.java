@@ -1,10 +1,6 @@
 package com.ll.exam.sbb;
 
-
-import com.ll.exam.sbb.dto.ArticleDto;
-import com.ll.exam.sbb.dto.Person;
-import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.*;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -126,20 +122,20 @@ public class MainController {
         return "세션변수 %s의 값이 %s 입니다.".formatted(name, value);
     }
 
-    List<ArticleDto> list = new ArrayList<>();
+    List<Article> list = new ArrayList<>();
 
     @GetMapping("/addArticle")
     @ResponseBody
     public String addArticle(String title, String body) {
 
-        ArticleDto articleDto = new ArticleDto(title, body);
+        Article articleDto = new Article(title, body);
         list.add(articleDto);
         return "%d번 글이 등록되었습니다.".formatted(articleDto.getId());
     }
 
     @GetMapping("/getArticle/{id}")
     @ResponseBody
-    public ArticleDto getArticle(@PathVariable int id) {
+    public Article getArticle(@PathVariable int id) {
 
 //        for(int i = 0 ; i < list.size() ; i++){
 //            if( list.get(i).getId() == id){
@@ -148,7 +144,7 @@ public class MainController {
 //            }
 //        }
 
-        ArticleDto articleDto = list
+        Article articleDto = list
                 .stream()
                 .filter(a -> a.getId() == id)
                 .findFirst()
@@ -164,7 +160,7 @@ public class MainController {
 
        for(int i = 0 ; i < list.size() ; i++){
             if( list.get(i).getId() == id){
-                list.set(i, new ArticleDto(id, title,body));
+                list.set(i, new Article(id, title,body));
                 return "%d글이 수정되었습니다.".formatted(id);
             }
         }
@@ -202,4 +198,38 @@ public class MainController {
         return person;
     }
 
+    @RequestMapping("/")
+    public String root() {
+        return "redirect:/question/list";
+    }
+
+}
+
+@AllArgsConstructor
+@Getter
+@Setter
+class Article {
+    private static int lastId = 0;
+    private int id;
+    private String title;
+    private String body;
+
+    public Article(String title, String body) {
+        this(++lastId, title, body);
+    }
+}
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
+class Person {
+    private int id;
+    private int age;
+    private String name;
+
+    public Person(int age, String name) {
+        this.age = age;
+        this.name = name;
+    }
 }
