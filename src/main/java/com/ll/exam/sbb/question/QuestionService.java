@@ -28,4 +28,5 @@ public class QuestionService {
     public List<Question> findAll() {
         return questionRepository.findAll();
     }
+
 }
