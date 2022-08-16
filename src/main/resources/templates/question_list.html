@@ -9,7 +9,7 @@
 
 <div class="container my-3">
     <table class="table">
-        <thead class="table-dark">
+        <thead class="table-primary table-bordered border-primary">
         <tr>
             <th>번호</th>
             <th>제목</th>
@@ -20,7 +20,7 @@
         <tr th:each="question, loop : ${questionList}">
             <td th:text="${loop.count}"></td>
             <td>
-                <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
+                <a class="text-decoration-none text-black" th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
             </td>
             <td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></td>
         </tr>
