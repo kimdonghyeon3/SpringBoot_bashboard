@@ -1,16 +1,15 @@
 package com.ll.exam.sbb;
 
-import com.ll.exam.sbb.entity.Answer;
-import com.ll.exam.sbb.entity.Question;
-import com.ll.exam.sbb.repository.AnswerRepository;
-import com.ll.exam.sbb.repository.QuestionRepository;
+import com.ll.exam.sbb.answer.Answer;
+import com.ll.exam.sbb.question.Question;
+import com.ll.exam.sbb.answer.AnswerRepository;
+import com.ll.exam.sbb.question.QuestionRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
-import javax.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
@@ -42,7 +41,7 @@ class SbbApplicationTests {
 		q2.setCreateDate(LocalDateTime.now());
 		this.questionRepository.save(q2);  // 두번째 질문 저장
 
-		Optional<Question> oq = Optional.ofNullable(this.questionRepository.findById(1));
+		Optional<Question> oq = Optional.ofNullable(this.questionRepository.findById(1).get());
 		Question q = oq.get();
 
 		Answer a = new Answer();
@@ -51,7 +50,7 @@ class SbbApplicationTests {
 		a.setCreateDate(LocalDateTime.now());
 		this.answerRepository.save(a);
 
-		oq = Optional.ofNullable(this.questionRepository.findById(2));
+		oq = Optional.ofNullable(this.questionRepository.findById(2).get());
 		q = oq.get();
 
 		a = new Answer();
@@ -63,9 +62,7 @@ class SbbApplicationTests {
 
 	@AfterEach
 	void after(){
-		questionRepository.disableForeignKeyChecks();
 		questionRepository.truncate();
-		questionRepository.enableForeignKeyChecks();
 	}
 
 	@Test
@@ -77,7 +74,7 @@ class SbbApplicationTests {
 	@Test
 	void testQuestionDelete() {
 		assertEquals(2, this.questionRepository.count());
-		Optional<Question> oq = Optional.ofNullable(this.questionRepository.findById(1));
+		Optional<Question> oq = Optional.ofNullable(this.questionRepository.findById(1).get());
 		assertTrue(oq.isPresent());
 		Question q = oq.get();
 		this.questionRepository.delete(q);
@@ -95,7 +92,7 @@ class SbbApplicationTests {
 
 	@Test
 	void testFindById() {
-		Optional<Question> oq = Optional.ofNullable(this.questionRepository.findById(1));
+		Optional<Question> oq = Optional.ofNullable(this.questionRepository.findById(1).get());
 		if(oq.isPresent()) {
 			Question q = oq.get();
 			assertEquals("sbb가 무엇인가요?", q.getSubject());
@@ -126,7 +123,7 @@ class SbbApplicationTests {
 
 	@Test
 	void testAnswer() {
-		Optional<Question> oq = Optional.ofNullable(this.questionRepository.findById(2));
+		Optional<Question> oq = Optional.ofNullable(this.questionRepository.findById(2).get());
 		assertTrue(oq.isPresent());
 		Question q = oq.get();
 

@@ -1,7 +1,7 @@
 package com.ll.exam.sbb;
 
-import com.ll.exam.sbb.entity.Question;
-import com.ll.exam.sbb.repository.QuestionRepository;
+import com.ll.exam.sbb.question.Question;
+import com.ll.exam.sbb.question.QuestionRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,9 +45,8 @@ public class QuestionRepositoryTest {
     }
 
     public static void clearData(QuestionRepository questionRepository) {
-        questionRepository.disableForeignKeyChecks();
+        questionRepository.deleteAll(); // DELETE FROM question;
         questionRepository.truncate();
-        questionRepository.enableForeignKeyChecks();
     }
 
     private void clearData() {
@@ -76,7 +75,7 @@ public class QuestionRepositoryTest {
     void 삭제() {
         assertThat(questionRepository.count()).isEqualTo(lastSampleDataId);
 
-        Question q = this.questionRepository.findById(1);
+        Question q = this.questionRepository.findById(1).get();
         questionRepository.delete(q);
 
         assertThat(questionRepository.count()).isEqualTo(lastSampleDataId - 1);
@@ -84,11 +83,11 @@ public class QuestionRepositoryTest {
 
     @Test
     void 수정() {
-        Question q = this.questionRepository.findById(1);
+        Question q = this.questionRepository.findById(1).get();
         q.setSubject("수정된 제목");
         questionRepository.save(q);
 
-        q = this.questionRepository.findById(1);
+        q = this.questionRepository.findById(1).get();
 
         assertThat(q.getSubject()).isEqualTo("수정된 제목");
     }

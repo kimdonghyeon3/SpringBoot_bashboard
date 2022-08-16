@@ -1,28 +1,33 @@
-package com.ll.exam.sbb.entity;
+package com.ll.exam.sbb.question;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.persistence.*;
 
+import com.ll.exam.sbb.answer.Answer;
 import lombok.Getter;
 import lombok.Setter;
-import org.springframework.data.annotation.CreatedDate;
 
 @Getter
 @Setter
 @Entity
-public class Answer {
+public class Question {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
+    @Column(length = 200)
+    private String subject;
+
     @Column(columnDefinition = "TEXT")
     private String content;
 
-    @CreatedDate
     private LocalDateTime createDate;
 
-    @ManyToOne
-    @JoinColumn(foreignKey = @ForeignKey(ConstraintMode.NO_CONSTRAINT))
-    private Question question;
+    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    private List<Answer> answerList;
+
+
+
 }
