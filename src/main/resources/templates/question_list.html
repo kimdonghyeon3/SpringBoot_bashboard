@@ -1,15 +1,8 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/bootstrap.min.css}">
-</head>
-<body>
+<html layout:decorate="~{layout}">
 
-<div class="container my-3">
+<div layout:fragment="content" class="container my-3">
     <table class="table">
-        <thead class="table-primary table-bordered border-primary">
+        <thead class="table-dark">
         <tr>
             <th>번호</th>
             <th>제목</th>
@@ -20,12 +13,13 @@
         <tr th:each="question, loop : ${questionList}">
             <td th:text="${loop.count}"></td>
             <td>
-                <a class="text-decoration-none text-black" th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
+                <a th:href="@{|/question/detail/${question.id}|}" th:text="${question.subject}"></a>
             </td>
-            <td th:text="${#temporals.format(question.createDate, 'yyyy-MM-dd HH:mm')}"></td>
+            <td th:text="${#temporals.format(question.createDate, 'yy-MM-dd HH:mm')}"></td>
         </tr>
         </tbody>
     </table>
+    <a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>
 </div>
-</body>
+
 </html>
