@@ -23,7 +23,7 @@ public class AnswerController {
 
     @PostMapping("/create/{id}")
     public String createAnswer(Model model,
-                               @PathVariable Integer id,
+                               @PathVariable Long id,
                                @RequestParam String content,
                                @Valid AnswerForm answerForm,
                                BindingResult bindingResult
