@@ -1,10 +1,7 @@
 package com.ll.exam.sbb.question;
 
 import com.ll.exam.sbb.DataNotFoundException;
-import com.ll.exam.sbb.question.Question;
-import com.ll.exam.sbb.question.QuestionRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -22,13 +19,9 @@ public class QuestionService {
 
     private final QuestionRepository questionRepository;
 
-    public Question findById(long id) {
-        Optional<Question> question = this.questionRepository.findById(id);
-        if (question.isPresent()) {
-            return question.get();
-        } else {
-            throw new DataNotFoundException("question not found");
-        }
+    public Question getQuestion(long id) {
+        return questionRepository.findById(id)
+                .orElseThrow(() -> new DataNotFoundException("no %d question not found,".formatted(id)));
     }
 
     public Page<Question> getList(int page) {

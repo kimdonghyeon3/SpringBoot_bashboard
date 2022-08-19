@@ -23,12 +23,12 @@ public class AnswerController {
 
     @PostMapping("/create/{id}")
     public String createAnswer(Model model,
-                               @PathVariable Long id,
+                               @PathVariable long id,
                                @RequestParam String content,
                                @Valid AnswerForm answerForm,
                                BindingResult bindingResult
                                ){
-        Question question = questionService.findById(id);
+        Question question = questionService.getQuestion(id);
 
         if(bindingResult.hasErrors()){
             model.addAttribute("question", question);

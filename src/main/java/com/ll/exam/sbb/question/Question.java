@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.*;
 
 import com.ll.exam.sbb.answer.Answer;
+import com.ll.exam.sbb.user.SiteUser;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -29,5 +30,7 @@ public class Question {
     private List<Answer> answerList;
 
 
+    @ManyToOne
+    private SiteUser author;
 
 }

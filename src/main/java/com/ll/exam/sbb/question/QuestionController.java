@@ -9,7 +9,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @Controller
 @RequiredArgsConstructor // 생성자 주입
@@ -27,10 +26,10 @@ public class QuestionController {
     }
 
     @RequestMapping(value = "/detail/{id}")
-    public String detail(Model model, @PathVariable("id") Long id,
+    public String detail(Model model, @PathVariable("id") long id,
                          AnswerForm answerForm) {
 
-        Question question = questionService.findById(id);
+        Question question = questionService.getQuestion(id);
 
         model.addAttribute("question", question);
 
