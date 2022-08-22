@@ -2,7 +2,10 @@ package com.ll.exam.sbb.answer;
 
 import com.ll.exam.sbb.question.Question;
 import com.ll.exam.sbb.question.QuestionService;
+import com.ll.exam.sbb.user.SiteUser;
+import com.ll.exam.sbb.user.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -12,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 @RequiredArgsConstructor
 @Controller
@@ -20,13 +24,15 @@ public class AnswerController {
 
     private final QuestionService questionService;
     private final AnswerService answerService;
+    private final UserService userService;
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("/create/{id}")
     public String createAnswer(Model model,
                                @PathVariable long id,
-                               @RequestParam String content,
                                @Valid AnswerForm answerForm,
-                               BindingResult bindingResult
+                               BindingResult bindingResult,
+                               Principal principal
                                ){
         Question question = questionService.getQuestion(id);
 
@@ -35,8 +41,9 @@ public class AnswerController {
             return "question_detail";
         }
 
+        SiteUser siteUser = userService.getUser(principal.getName());
 
-        answerService.create(question, answerForm.getContent());
+        answerService.create(question, answerForm.getContent(), siteUser);
 
         return String.format("redirect:/question/detail/%s", id);
     }
