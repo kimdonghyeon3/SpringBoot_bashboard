@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
-public interface AnswerRepository extends JpaRepository<Answer, Integer>, RepositoryUtil {
+public interface AnswerRepository extends JpaRepository<Answer, Long>, RepositoryUtil {
 
     @Transactional
     @Modifying

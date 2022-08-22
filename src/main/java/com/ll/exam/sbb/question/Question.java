@@ -1,6 +1,7 @@
 package com.ll.exam.sbb.question;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.*;
@@ -12,25 +13,26 @@ import lombok.Setter;
 
 @Getter
 @Setter
-@Entity
+@Entity // 아래 Question 클래스는 엔티티 클래스이다.
+// 아래 클래스와 1:1로 매칭되는 테이블이 DB에 없다면, 자동으로 생성되어야 한다.
 public class Question {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Id // primary key
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // auto_increment
     private Long id;
-
-    @Column(length = 200)
+    @Column(length = 200) // varchar(200)
     private String subject;
-
     @Column(columnDefinition = "TEXT")
     private String content;
-
     private LocalDateTime createDate;
 
-    @OneToMany(mappedBy = "question", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    private List<Answer> answerList;
-
+    @OneToMany(mappedBy = "question", cascade = {CascadeType.ALL})
+    private List<Answer> answerList = new ArrayList<>();
 
     @ManyToOne
     private SiteUser author;
 
+    public void addAnswer(Answer answer) {
+        answer.setQuestion(this);
+        getAnswerList().add(answer);
+    }
 }
