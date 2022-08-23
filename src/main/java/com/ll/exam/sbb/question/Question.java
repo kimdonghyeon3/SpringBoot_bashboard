@@ -3,6 +3,7 @@ package com.ll.exam.sbb.question;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.*;
 
@@ -36,4 +37,7 @@ public class Question {
         answer.setQuestion(this);
         getAnswerList().add(answer);
     }
+
+    @ManyToMany
+    Set<SiteUser> voter;
 }
