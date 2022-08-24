@@ -3,10 +3,7 @@ package com.ll.exam.sbb.question;
 import com.ll.exam.sbb.DataNotFoundException;
 import com.ll.exam.sbb.user.SiteUser;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -25,11 +22,16 @@ public class QuestionService {
                 .orElseThrow(() -> new DataNotFoundException("no %d question not found,".formatted(id)));
     }
 
-    public Page<Question> getList(int page) {
+    public Page<Question> getList(int page, String kw) {
         List<Sort.Order> sorts = new ArrayList<>();
         sorts.add(Sort.Order.desc("createDate"));
         Pageable pageable = PageRequest.of(page, 10, Sort.by(sorts));
-        return this.questionRepository.findAll(pageable);
+
+        if(kw == null){
+            return questionRepository.findAll(pageable);
+        }
+
+        return this.questionRepository.findBySubjectContains(kw, pageable);
     }
 
     public void create(String subject, String content, SiteUser user) {
