@@ -32,7 +32,9 @@ public class QuestionService {
         }
 
         //return this.questionRepository.findBySubjectContains(kw, pageable);
-        return questionRepository.findBySubjectContainsOrContentContainsOrAuthor_usernameContains(kw, kw, kw, pageable);
+        //return questionRepository.findBySubjectContainsOrContentContainsOrAuthor_usernameContains(kw, kw, kw, pageable);
+
+        return questionRepository.findDistinctBySubjectContainsOrContentContainsOrAuthor_usernameContainsOrAnswerList_contentContains(kw, kw, kw, kw, pageable);
     }
 
     public void create(String subject, String content, SiteUser user) {
