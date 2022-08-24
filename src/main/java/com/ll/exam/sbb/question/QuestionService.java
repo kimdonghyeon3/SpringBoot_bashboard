@@ -31,7 +31,8 @@ public class QuestionService {
             return questionRepository.findAll(pageable);
         }
 
-        return this.questionRepository.findBySubjectContains(kw, pageable);
+        //return this.questionRepository.findBySubjectContains(kw, pageable);
+        return questionRepository.findBySubjectContainsOrContentContainsOrAuthor_usernameContains(kw, kw, kw, pageable);
     }
 
     public void create(String subject, String content, SiteUser user) {
