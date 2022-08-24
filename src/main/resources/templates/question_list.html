@@ -1,6 +1,21 @@
 <html layout:decorate="~{layout}">
 
 <div layout:fragment="content" class="container my-3">
+
+    <div class="row my-3">
+        <div class="col-6">
+            <a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>
+        </div>
+        <div class="col-6">
+                <form class="input-group"th:action="@{/question/list}" method="get">
+                <input type="text" id="search_kw" name="kw" class="form-control" th:value="${kw}">
+                <div class="input-group-append">
+                    <button class="btn btn-outline-secondary" type="submit" id="btn_search">찾기</button>
+                </div>
+                </form>
+        </div>
+    </div>
+
     <table class="table">
         <thead class="table-dark">
         <tr class="text-center">
@@ -50,7 +65,7 @@
     </div>
     <!-- 페이징처리 끝 -->
 
-    <a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>
+<!--    <a th:href="@{/question/create}" class="btn btn-primary">질문 등록하기</a>-->
 </div>
 
 </html>
